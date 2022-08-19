@@ -19,4 +19,10 @@ getProducts(){
   return this.http.get(endpoint);
 
   }
+
+// save the products
+saveProducts(body: any){
+    const endpoint = `${base_url}/products`;
+return this.http.post(endpoint, body);
+}
 }

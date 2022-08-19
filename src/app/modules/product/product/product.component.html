@@ -16,7 +16,7 @@
     <div fxFlex fxLayout="row" fxLayoutAlign="flex-end">
       <ul fxLayout="row" fxLayoutGap="20px">
         <li>
-          <button mat-raised-button color="primary">Agregar producto</button>
+          <button mat-raised-button color="primary" (click)="openProductDialog()">Agregar producto</button>
         </li>
       </ul>
 
@@ -32,32 +32,33 @@
       <ng-container matColumnDef="id">
         <th mat-header-cell *matHeaderCellDef>N°</th>
         <td mat-cell *matCellDef="let element">{{ element.id }}</td>
-        </ng-container>
-    <!--name column-->
-    <ng-container matColumnDef="name">
-    <th mat-header-cell *matHeaderCellDef>Nombre</th>
+      </ng-container>
+      <!--name column-->
+      <ng-container matColumnDef="name">
+        <th mat-header-cell *matHeaderCellDef>Nombre</th>
         <td mat-cell *matCellDef="let element">{{ element.name }}</td>
-        </ng-container>
-        <!--price column-->
-        <ng-container matColumnDef="price">
+      </ng-container>
+      <!--price column-->
+      <ng-container matColumnDef="price">
         <th mat-header-cell *matHeaderCellDef>Precio</th>
         <td mat-cell *matCellDef="let element">{{ element.price }}</td>
-        </ng-container>
-            <!--account account-->
-            <ng-container matColumnDef="account">
-              <th mat-header-cell *matHeaderCellDef>Cantidad</th>
-              <td mat-cell *matCellDef="let element">{{ element.account }}</td>
-            </ng-container>
-                  <!--category column-->
-                  <ng-container matColumnDef="category">
-                    <th mat-header-cell *matHeaderCellDef>Categoria</th>
-                    <td mat-cell *matCellDef="let element">{{ element.category }}</td>
-                  </ng-container>
-                        <!--picture column-->
-                        <ng-container matColumnDef="picture">
-                          <th mat-header-cell *matHeaderCellDef>Foto</th>
-                          <td mat-cell *matCellDef="let element"> <img [src]="element.picture" width="50" height="50" alt="foto producto"></td>
-                        </ng-container>
+      </ng-container>
+      <!--account account-->
+      <ng-container matColumnDef="account">
+        <th mat-header-cell *matHeaderCellDef>Cantidad</th>
+        <td mat-cell *matCellDef="let element">{{ element.account }}</td>
+      </ng-container>
+      <!--category column-->
+      <ng-container matColumnDef="category">
+        <th mat-header-cell *matHeaderCellDef>Categoria</th>
+        <td mat-cell *matCellDef="let element">{{ element.category }}</td>
+      </ng-container>
+      <!--picture column-->
+      <ng-container matColumnDef="picture">
+        <th mat-header-cell *matHeaderCellDef>Foto</th>
+        <td mat-cell *matCellDef="let element"> <img [src]="element.picture" width="50" height="50" alt="foto producto">
+        </td>
+      </ng-container>
 
       <!--Actions-->
       <ng-container matColumnDef="actions">
