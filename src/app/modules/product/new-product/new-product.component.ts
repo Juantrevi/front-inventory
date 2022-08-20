@@ -4,7 +4,7 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { CategoryService } from '../../shared/services/category.service';
 import { ProductService } from '../../shared/services/product.service';
 
-export interface Category{
+export interface Category {
   description: string;
   id: number;
   name: string;
@@ -23,27 +23,32 @@ export class NewProductComponent implements OnInit {
   selectedFile: any;
   nameImg: string = "";
 
-  constructor(private fb: FormBuilder, private categoryServices: CategoryService, 
+  constructor(private fb: FormBuilder, private categoryServices: CategoryService,
     private productService: ProductService,
-    private dialogRef: MatDialogRef<NewProductComponent>, 
+    private dialogRef: MatDialogRef<NewProductComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any) {
 
-      this.estadoFormulario = "Agregar";
-      this.productForm = this.fb.group({
-        name: ['', Validators.required],
-        price: ['', Validators.required],
-        account: ['', Validators.required],
-        category: ['', Validators.required],
-        picture: ['', Validators.required]
-      })
+    this.estadoFormulario = "Agregar";
+    this.productForm = this.fb.group({
+      name: ['', Validators.required],
+      price: ['', Validators.required],
+      account: ['', Validators.required],
+      category: ['', Validators.required],
+      picture: ['', Validators.required]
+    })
 
+    if (data != null) {
+      this.updateForm(data);
+      this.estadoFormulario = "Actualizar";
     }
+
+  }
 
   ngOnInit(): void {
     this.getCategories()
   }
 
-  onSave(){
+  onSave() {
     let data = {
       name: this.productForm.get('name')?.value,
       price: this.productForm.get('price')?.value,
@@ -58,33 +63,58 @@ export class NewProductComponent implements OnInit {
     uploadImageData.append('account', data.account);
     uploadImageData.append('categoryId', data.category);
 
-    //Call service to save a product
-    this.productService.saveProducts(uploadImageData)
-    .subscribe((data:any) => {
-      this.dialogRef.close(1)
-    }, (error:any) => {
-      this.dialogRef.close(2)
-    })
+    if (this.data != null) {
+      //update the product
+      this.productService.updateProduct(uploadImageData, this.data.id)
+        .subscribe((data: any) => {
+          this.dialogRef.close(1)
+        }, (error: any) => {
+          this.dialogRef.close(2)
+        })
+
+    } else {
+      //Call service to save a product
+      this.productService.saveProducts(uploadImageData)
+        .subscribe((data: any) => {
+          this.dialogRef.close(1)
+        }, (error: any) => {
+          this.dialogRef.close(2)
+        })
+
+    }
+
+
   }
 
-  onCancel(){
+  onCancel() {
     this.dialogRef.close(3);
   }
 
-  getCategories(){
+  getCategories() {
     this.categoryServices.getCategories()
-    .subscribe((data:any) => {
-      this.categories = data.categoryResponse.category;
-    }, (error:any) => {
-      console.log("Error al consultar las categorias");
-    })
+      .subscribe((data: any) => {
+        this.categories = data.categoryResponse.category;
+      }, (error: any) => {
+        console.log("Error al consultar las categorias");
+      })
   }
 
-  onFileChange(event: any){
+  onFileChanged(event: any) {
     this.selectedFile = event.target.files[0];
     console.log(this.selectedFile);
 
     this.nameImg = event.target.files[0].name;
+
+  }
+
+  updateForm(data: any) {
+    this.productForm = this.fb.group({
+      name: [data.name, Validators.required],
+      price: [data.price, Validators.required],
+      account: [data.account, Validators.required],
+      category: [data.category.id, Validators.required],
+      picture: ['', Validators.required]
+    })
 
   }
 

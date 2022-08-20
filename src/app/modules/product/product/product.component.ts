@@ -3,6 +3,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSnackBar, MatSnackBarRef, SimpleSnackBar } from '@angular/material/snack-bar';
 import { MatTableDataSource } from '@angular/material/table';
+import { ConfirmComponent } from 'src/app/modules/shared/components/confirm/confirm.component';
 import { ProductService } from '../../shared/services/product.service';
 import { NewProductComponent } from '../new-product/new-product.component';
 
@@ -21,7 +22,7 @@ export class ProductComponent implements OnInit {
     this.getProducts();
   }
 
-    displayedColumns: string[] = ['id', 'name', 'price', 'account', 'category', 'picture'];
+    displayedColumns: string[] = ['id', 'name', 'price', 'account', 'category', 'picture', 'actions'];
   dataSource = new MatTableDataSource<ProductElement>();
 
   @ViewChild(MatPaginator)
@@ -44,7 +45,7 @@ export class ProductComponent implements OnInit {
       let listProduct = resp.product.products;
 
       listProduct.forEach((element: ProductElement) => {
-        element.category = element.category.name;
+        //element.category = element.category.name;
         element.picture = 'data:image/jpeg;base64,' + element.picture;
         dateProduct.push(element);
       });
@@ -77,7 +78,26 @@ export class ProductComponent implements OnInit {
       duration: 2000
     });
   }
+
+  edit(id: number, name: string, price: number, account: number, category: any){
+  const dialogRef = this.dialog.open(NewProductComponent, {
+      width: '450px',
+      data: {id: id, name: name, price: price, account: account, category: category}
+    });
+
+    dialogRef.afterClosed().subscribe((result:any) => {
+
+      if(result == 1){
+        this.openSnackBar("Producto editado", "Exitosa");
+        this.getProducts();
+      }else if(result == 2){
+        this.openSnackBar("Se produjo un error al editar Producto", "Error");
+      } 
+    });
+  }
 }
+
+
 
 
 export interface ProductElement {
