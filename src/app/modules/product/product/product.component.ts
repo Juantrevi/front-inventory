@@ -95,6 +95,23 @@ export class ProductComponent implements OnInit {
       } 
     });
   }
+
+  delete(id: any){
+      const dialogRef = this.dialog.open(ConfirmComponent, {
+      width: '450px',
+      data: {id: id, module: "product"}
+    });
+
+    dialogRef.afterClosed().subscribe((result: any) => {
+
+      if(result == 1){
+        this.openSnackBar("Producto eliminado", "Exitoso");
+        this.getProducts();
+      }else if(result == 2){
+        this.openSnackBar("Se produjo un error al eliminar Producto", "Error");
+      } 
+    });
+  }
 }
 
 

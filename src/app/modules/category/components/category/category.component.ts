@@ -72,10 +72,10 @@ export class CategoryComponent implements OnInit {
     });
   }
   
-  edit(id:number, name:string, description:string){
+  edit(id:number, name:string, description: string){
     const dialogRef = this.dialog.open(NewCategoryComponent, {
       width: '450px',
-      data: {id:id, name:name, description:description}
+      data: {id:id, name:name, description: description}
     });
 
     dialogRef.afterClosed().subscribe((result:any) => {
@@ -91,7 +91,7 @@ export class CategoryComponent implements OnInit {
 
   delete(id: any){
     const dialogRef = this.dialog.open( ConfirmComponent, {
-      data: {id:id}
+      data: {id:id, module: "category"}
     });
 
     dialogRef.afterClosed().subscribe((result:any) => {
